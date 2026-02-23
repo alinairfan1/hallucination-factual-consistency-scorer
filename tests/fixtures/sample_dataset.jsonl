@@ -1,0 +1,2 @@
+{"answer": "The Eiffel Tower is located in Paris and was completed in 1889.", "sources": ["The Eiffel Tower is a wrought-iron lattice tower in Paris, France.", "Construction of the Eiffel Tower finished in 1889."], "label": "supported"}
+{"answer": "The Eiffel Tower is located in Berlin.", "sources": ["The Eiffel Tower is a wrought-iron lattice tower in Paris, France."], "label": "hallucinated"}
