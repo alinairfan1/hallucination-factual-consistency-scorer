@@ -26,8 +26,25 @@ as a stretch goal), Postgres for eval run storage, TypeScript + React for a resu
 
 ## Status
 
-Planned — see [`PLANNING.md`](./PLANNING.md) for full design. Difficulty: ⭐⭐ Easy-Medium (2nd of 5 in build order).
+M1 (scaffold) complete — FastAPI app, Pydantic schemas, `ScoringRun` DB model, dataset ingestion,
+Alembic migrations, Docker Compose packaging, and CI are all in place. No claim-extraction or
+entailment-checking logic yet — that's M2. See [`PLANNING.md`](./PLANNING.md) for full design and
+[`docs/superpowers/plans/2026-07-26-m1-scaffold.md`](./docs/superpowers/plans/2026-07-26-m1-scaffold.md)
+for the M1 implementation plan. Difficulty: ⭐⭐ Easy-Medium (2nd of 5 in build order).
 
 ## Quickstart
 
-_Not yet implemented. Quickstart instructions will be added once the initial scaffold lands._
+Run the API + Postgres stack:
+
+```bash
+docker compose up -d --build
+curl http://localhost:8000/health
+# {"status":"ok"}
+```
+
+Run tests locally:
+
+```bash
+pip install -e ".[dev]"
+pytest -v
+```
