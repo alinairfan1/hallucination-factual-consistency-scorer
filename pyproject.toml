@@ -22,6 +22,9 @@ dev = [
     "mypy>=1.13",
 ]
 
+[project.scripts]
+scorer-benchmark = "scorer.benchmark.cli:main"
+
 [build-system]
 requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
