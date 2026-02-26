@@ -15,7 +15,7 @@ two examples in this project's `scorer.dataset.DatasetExample` JSONL shape
 100 examples total (50 supported, 50 hallucinated). Regenerate with:
 
 ```bash
-PYTHONPATH=src python3 -m scripts.prepare_halueval_subset --limit 50 --output data/halueval_qa_benchmark.jsonl
+python3 -m scripts.prepare_halueval_subset --limit 50 --output data/halueval_qa_benchmark.jsonl
 ```
 
 See HaluEval's repository for the original dataset and its MIT license terms.
