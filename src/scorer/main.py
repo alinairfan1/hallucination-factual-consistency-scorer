@@ -2,14 +2,12 @@ import anthropic
 from fastapi import Depends, FastAPI
 from sqlalchemy.orm import Session
 
-from scorer.aggregation import aggregate
-from scorer.claims import extract_claims
 from scorer.config import settings
 from scorer.db.models import ScoringRun
 from scorer.db.session import get_session
-from scorer.entailment import check_entailment
 from scorer.llm_client import AnthropicJudge
 from scorer.schemas import ScoreRequest, ScoreResponse
+from scorer.scoring import run_scoring
 
 app = FastAPI(title="Hallucination / Factual-Consistency Scorer")
 
@@ -30,22 +28,15 @@ def score(
     session: Session = Depends(get_session),
     llm: AnthropicJudge = Depends(get_llm_client),
 ) -> ScoreResponse:
-    claims = extract_claims(request.answer, llm)
-
-    claim_verdicts = []
-    for claim in claims:
-        verdict, reason = check_entailment(claim, request.sources, llm)
-        claim_verdicts.append((claim, verdict, reason))
-
-    score_value, flagged_claims = aggregate(claim_verdicts)
+    result = run_scoring(request.answer, request.sources, llm)
 
     log = ScoringRun(
         answer=request.answer,
         num_sources=len(request.sources),
-        score=score_value,
-        num_flagged_claims=len(flagged_claims),
+        score=result.score,
+        num_flagged_claims=len(result.flagged_claims),
     )
     session.add(log)
     session.commit()
 
-    return ScoreResponse(score=score_value, flagged_claims=flagged_claims)
+    return result
