@@ -20,12 +20,19 @@ EXTRACTION_SYSTEM_PROMPT = (
     'round, paraphrase, or drop precision (e.g. keep "330 meters", not "tall").\n'
     "- Do not extract subjective opinions, greetings, or statements with no factual "
     'content (e.g. "Hello!", "That\'s a great question.").\n'
+    '- If the text is a "Question: ... Answer: ..." pair, reconstruct the single '
+    "factual claim the answer is asserting by combining the question and answer "
+    "into a standalone declarative sentence — never extract [] just because the "
+    "answer alone (e.g. a bare name or number) doesn't read as a complete sentence "
+    "in isolation.\n"
     "- If the text contains no checkable factual claims, respond with [].\n\n"
-    "Example:\n"
+    "Examples:\n"
     'Text: "The Eiffel Tower, built in 1889, is 330 meters tall and located in '
     'Paris."\n'
     'Claims: ["The Eiffel Tower was built in 1889.", "The Eiffel Tower is 330 '
     'meters tall.", "The Eiffel Tower is located in Paris."]\n\n'
+    'Text: "Question: \\"What is the capital of France?\\" Answer: Berlin"\n'
+    'Claims: ["The capital of France is Berlin."]\n\n'
     "Respond with ONLY a JSON array of strings (the claims), no other text."
 )
 
