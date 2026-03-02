@@ -106,11 +106,11 @@ Benchmark CLI → loads public hallucination dataset (answer, sources, human lab
 
 ## 9. Best Practices Checklist
 
-- [ ] Unit tests for claim extraction parsing and aggregation logic
-- [ ] Integration test for the full answer+sources → score path (mocked LLM-judge calls)
-- [ ] Typed request/response schemas (Pydantic) shared between API and benchmark CLI
-- [ ] Structured logging of scoring runs (no ad hoc prints)
-- [ ] CI pipeline: lint + type-check + tests on push
-- [ ] Dockerized for one-command local run
-- [ ] README documents real benchmark numbers (precision/recall/F1, calibration) once M3 lands
+- [x] Unit tests for claim extraction parsing and aggregation logic
+- [x] Integration test for the full answer+sources → score path (mocked LLM-judge calls)
+- [x] Typed request/response schemas (Pydantic) shared between API and benchmark CLI
+- [x] Structured logging of scoring runs (no ad hoc prints)
+- [x] CI pipeline: lint + type-check + tests on push
+- [x] Dockerized for one-command local run
+- [x] README documents real benchmark numbers (precision/recall/F1, calibration) once M3 lands
 - [ ] Dataset license/usage terms checked and documented before redistribution of any sample data
