@@ -8,12 +8,25 @@ class Judge(Protocol):
 
 
 EXTRACTION_SYSTEM_PROMPT = (
-    "You are a claim extraction system. Given a piece of text, break it into a list "
-    "of atomic, self-contained, independently-checkable factual claims. Each claim "
-    "must stand alone: resolve pronouns and implicit references so no claim depends "
-    "on another claim's context. Respond with ONLY a JSON array of strings (the "
-    "claims), no other text. If the text contains no checkable factual claims, "
-    "respond with []."
+    "You are a claim extraction system for a fact-checking pipeline. Given a piece "
+    "of text, break it into a list of atomic, self-contained, independently-checkable "
+    "factual claims.\n\n"
+    "Rules:\n"
+    "- Each claim must stand alone: resolve pronouns and implicit references so no "
+    "claim depends on another claim's context.\n"
+    "- Each claim must express exactly one fact. Split compound statements (e.g. "
+    '"X and Y") into separate claims for X and for Y.\n'
+    "- Preserve exact numbers, dates, units, and proper nouns verbatim — do not "
+    'round, paraphrase, or drop precision (e.g. keep "330 meters", not "tall").\n'
+    "- Do not extract subjective opinions, greetings, or statements with no factual "
+    'content (e.g. "Hello!", "That\'s a great question.").\n'
+    "- If the text contains no checkable factual claims, respond with [].\n\n"
+    "Example:\n"
+    'Text: "The Eiffel Tower, built in 1889, is 330 meters tall and located in '
+    'Paris."\n'
+    'Claims: ["The Eiffel Tower was built in 1889.", "The Eiffel Tower is 330 '
+    'meters tall.", "The Eiffel Tower is located in Paris."]\n\n'
+    "Respond with ONLY a JSON array of strings (the claims), no other text."
 )
 
 
