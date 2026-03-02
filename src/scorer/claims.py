@@ -24,7 +24,16 @@ EXTRACTION_SYSTEM_PROMPT = (
     "factual claim the answer is asserting by combining the question and answer "
     "into a standalone declarative sentence — never extract [] just because the "
     "answer alone (e.g. a bare name or number) doesn't read as a complete sentence "
-    "in isolation.\n"
+    "in isolation. Extract only what the ANSWER specifies: if the question's own "
+    "phrasing includes extra descriptive detail about an entity (e.g. \"Dua Lipa, "
+    'an English singer, songwriter and model, ... released in what year?"), do not '
+    "extract those descriptive details as their own claims — they are the "
+    "question's framing, not something the answer is asserting.\n"
+    "- Never add information beyond what the text literally states, even if you "
+    "recognize the subject and know more about it. If the answer names only some "
+    "members of a group or gives a partial/truncated list, extract a claim about "
+    "only the members actually named — do not complete the list from your own "
+    "knowledge.\n"
     "- If the text contains no checkable factual claims, respond with [].\n\n"
     "Examples:\n"
     'Text: "The Eiffel Tower, built in 1889, is 330 meters tall and located in '
@@ -33,6 +42,9 @@ EXTRACTION_SYSTEM_PROMPT = (
     'meters tall.", "The Eiffel Tower is located in Paris."]\n\n'
     'Text: "Question: \\"What is the capital of France?\\" Answer: Berlin"\n'
     'Claims: ["The capital of France is Berlin."]\n\n'
+    'Text: "Question: \\"Dua Lipa, an English singer and songwriter, released her '
+    'debut album in what year?\\" Answer: 2017"\n'
+    'Claims: ["Dua Lipa released her debut album in 2017."]\n\n'
     "Respond with ONLY a JSON array of strings (the claims), no other text."
 )
 

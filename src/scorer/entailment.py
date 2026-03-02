@@ -38,9 +38,12 @@ ENTAILMENT_SYSTEM_PROMPT = (
     "Judge only what the sources actually say — do not use outside/world knowledge "
     "to fill gaps. Reserve contradicted/not_enough_info for a real inconsistency or "
     "a real informational gap, not for an alternate reading you had to construct.\n\n"
-    "Respond with ONLY a JSON object of the form: "
-    '{"verdict": "entailed" | "contradicted" | "not_enough_info", '
-    '"reason": "<one sentence explanation>"}.'
+    "Work out your reasoning first, then state your verdict — never decide the "
+    "verdict before writing the reason, since your reason is what the verdict must "
+    "follow from, not a justification written after the fact. Respond with ONLY a "
+    "JSON object with 'reason' before 'verdict', of the form: "
+    '{"reason": "<one sentence of reasoning, including any numbers/dates/quantities '
+    'you compared>", "verdict": "entailed" | "contradicted" | "not_enough_info"}.'
 )
 
 
