@@ -80,6 +80,39 @@ def test_run_benchmark_continues_past_a_malformed_judge_response():
     assert results[2].predicted_label == "supported"
 
 
+def test_run_benchmark_recovers_from_a_non_value_error_api_failure():
+    class FlakyJudge:
+        def __init__(self, responses: list[str]) -> None:
+            self._responses = list(responses)
+
+        def complete(self, system: str, user: str) -> str:
+            response = self._responses.pop(0)
+            if response == "TIMEOUT":
+                raise TimeoutError("judge call exceeded the configured timeout")
+            return response
+
+    examples = [
+        DatasetExample(answer="a1", sources=["s1"], label="supported"),
+        DatasetExample(answer="a2", sources=["s2"], label="hallucinated"),
+    ]
+    llm = FlakyJudge(
+        responses=[
+            '["claim1"]',
+            "TIMEOUT",  # entailment check for example 1 times out
+            '["claim2"]',
+            '{"verdict": "contradicted", "reason": "no"}',
+        ]
+    )
+
+    results = run_benchmark(examples, llm)
+
+    assert len(results) == 2
+    assert results[0].error is not None
+    assert results[0].predicted_label == "hallucinated"
+    assert results[1].error is None
+    assert results[1].predicted_label == "hallucinated"
+
+
 def test_run_benchmark_preserves_example_order_via_index():
     examples = [
         DatasetExample(answer="a1", sources=["s1"], label="supported"),

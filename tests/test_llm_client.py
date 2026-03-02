@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 
 import pytest
-from mistralai.client.utils import BackoffStrategy, RetryConfig
+from mistralai.client.utils import RetryConfig
 
 from scorer.llm_client import MistralJudge, parse_json_response
 
@@ -26,7 +26,7 @@ def test_parse_json_response_raises_clear_error_for_invalid_json():
 
 @dataclass
 class FakeMistralMessage:
-    content: str
+    content: str | None
 
 
 @dataclass
@@ -83,10 +83,24 @@ def test_mistral_judge_passes_system_user_model_and_temperature():
     ]
 
 
-def test_default_judge_retry_config_covers_transient_errors():
+def test_default_judge_retry_config_uses_bounded_exponential_backoff():
     from scorer.llm_client import DEFAULT_JUDGE_RETRY_CONFIG
 
     assert isinstance(DEFAULT_JUDGE_RETRY_CONFIG, RetryConfig)
     assert DEFAULT_JUDGE_RETRY_CONFIG.strategy == "backoff"
-    assert isinstance(DEFAULT_JUDGE_RETRY_CONFIG.backoff, BackoffStrategy)
+    assert DEFAULT_JUDGE_RETRY_CONFIG.backoff.initial_interval == 500
+    assert DEFAULT_JUDGE_RETRY_CONFIG.backoff.max_interval == 60_000
+    assert DEFAULT_JUDGE_RETRY_CONFIG.backoff.exponent == 1.5
+    assert DEFAULT_JUDGE_RETRY_CONFIG.backoff.max_elapsed_time == 300_000
     assert DEFAULT_JUDGE_RETRY_CONFIG.retry_connection_errors is True
+
+
+def test_mistral_judge_raises_for_missing_message_content():
+    fake_response = FakeMistralResponse(
+        choices=[FakeMistralChoice(message=FakeMistralMessage(content=None))]
+    )
+    client = FakeMistralClient(fake_response)
+    judge = MistralJudge(model="mistral-large-latest", client=client)
+
+    with pytest.raises(ValueError):
+        judge.complete(system="Be terse.", user="Say hi.")

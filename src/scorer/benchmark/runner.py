@@ -26,10 +26,11 @@ def run_benchmark(
     for index, example in enumerate(examples):
         try:
             scored = run_scoring(example.answer, example.sources, llm)
-        except ValueError as exc:
-            # A single malformed judge JSON response (bad claim extraction or
-            # entailment output — see scorer.llm_client.parse_json_response,
-            # scorer.claims.extract_claims, scorer.entailment.check_entailment)
+        except Exception as exc:
+            # A single malformed judge response — bad claim extraction/entailment
+            # JSON (scorer.llm_client.parse_json_response, scorer.claims,
+            # scorer.entailment) or an API-boundary failure that survives the
+            # judge's own retry budget (timeout, connection error, SDK error) —
             # must not abort the whole benchmark run and discard every
             # already-computed result, especially on a paid multi-hundred-call
             # run. Record it as a distinguishable failure and keep going.

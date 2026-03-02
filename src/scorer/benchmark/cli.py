@@ -8,13 +8,17 @@ from scorer.benchmark.report import format_report
 from scorer.benchmark.runner import run_benchmark
 from scorer.config import settings
 from scorer.dataset import load_examples
-from scorer.llm_client import DEFAULT_JUDGE_RETRY_CONFIG, MistralJudge
+from scorer.llm_client import DEFAULT_JUDGE_RETRY_CONFIG, DEFAULT_JUDGE_TIMEOUT_MS, MistralJudge
 
 DEFAULT_DATASET_PATH = Path("data/halueval_qa_benchmark.jsonl")
 
 
 def build_judge() -> MistralJudge:
-    client = Mistral(api_key=settings.mistral_api_key, retry_config=DEFAULT_JUDGE_RETRY_CONFIG)
+    client = Mistral(
+        api_key=settings.mistral_api_key,
+        retry_config=DEFAULT_JUDGE_RETRY_CONFIG,
+        timeout_ms=DEFAULT_JUDGE_TIMEOUT_MS,
+    )
     return MistralJudge(model=settings.judge_model, client=client)
 
 

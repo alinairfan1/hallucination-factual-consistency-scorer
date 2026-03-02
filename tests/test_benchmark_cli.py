@@ -13,9 +13,10 @@ class FakeJudge:
 
 def test_build_judge_uses_configured_model_and_key(monkeypatch):
     class FakeClient:
-        def __init__(self, api_key: str, retry_config) -> None:
+        def __init__(self, api_key: str, retry_config, timeout_ms) -> None:
             self.api_key = api_key
             self.retry_config = retry_config
+            self.timeout_ms = timeout_ms
 
     monkeypatch.setattr(cli_module, "Mistral", FakeClient)
 
@@ -23,6 +24,7 @@ def test_build_judge_uses_configured_model_and_key(monkeypatch):
 
     assert judge.model == settings.judge_model
     assert judge.client.api_key == settings.mistral_api_key
+    assert judge.client.timeout_ms == cli_module.DEFAULT_JUDGE_TIMEOUT_MS
 
 
 def test_main_prints_report_for_a_small_dataset(monkeypatch, tmp_path, capsys):

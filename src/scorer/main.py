@@ -1,3 +1,5 @@
+from functools import lru_cache
+
 from fastapi import Depends, FastAPI
 from mistralai.client import Mistral
 from sqlalchemy.orm import Session
@@ -5,7 +7,7 @@ from sqlalchemy.orm import Session
 from scorer.config import settings
 from scorer.db.models import ScoringRun
 from scorer.db.session import get_session
-from scorer.llm_client import DEFAULT_JUDGE_RETRY_CONFIG, MistralJudge
+from scorer.llm_client import DEFAULT_JUDGE_RETRY_CONFIG, DEFAULT_JUDGE_TIMEOUT_MS, MistralJudge
 from scorer.schemas import ScoreRequest, ScoreResponse
 from scorer.scoring import run_scoring
 
@@ -17,8 +19,13 @@ def health() -> dict[str, str]:
     return {"status": "ok"}
 
 
+@lru_cache
 def get_llm_client() -> MistralJudge:
-    client = Mistral(api_key=settings.mistral_api_key, retry_config=DEFAULT_JUDGE_RETRY_CONFIG)
+    client = Mistral(
+        api_key=settings.mistral_api_key,
+        retry_config=DEFAULT_JUDGE_RETRY_CONFIG,
+        timeout_ms=DEFAULT_JUDGE_TIMEOUT_MS,
+    )
     return MistralJudge(model=settings.judge_model, client=client)
 
 
