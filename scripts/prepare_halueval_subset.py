@@ -6,6 +6,13 @@ Each HaluEval QA row has {knowledge, question, right_answer, hallucinated_answer
 This converts each row into two scorer.dataset.DatasetExample-shaped JSON lines:
 one labeled "supported" (right_answer) and one labeled "hallucinated"
 (hallucinated_answer), both grounded against the same knowledge as their source.
+
+HaluEval's `right_answer`/`hallucinated_answer` are short-answer QA spans (e.g.
+"Delhi") that are only checkable propositions in the context of their question
+("the answer to <question> is Delhi"). A bare span isn't a self-contained claim,
+so both answer texts are folded into a `Question: "..." Answer: ...` string
+before being written out — applied uniformly to both labels so the transformation
+itself introduces no new confound.
 """
 
 import argparse
@@ -20,11 +27,20 @@ def convert_halueval_rows(raw_rows: list[dict], limit: int) -> list[dict]:
     examples = []
     for row in raw_rows[:limit]:
         sources = [row["knowledge"]]
+        question = row["question"]
         examples.append(
-            {"answer": row["right_answer"], "sources": sources, "label": "supported"}
+            {
+                "answer": f'Question: "{question}" Answer: {row["right_answer"]}',
+                "sources": sources,
+                "label": "supported",
+            }
         )
         examples.append(
-            {"answer": row["hallucinated_answer"], "sources": sources, "label": "hallucinated"}
+            {
+                "answer": f'Question: "{question}" Answer: {row["hallucinated_answer"]}',
+                "sources": sources,
+                "label": "hallucinated",
+            }
         )
     return examples
 

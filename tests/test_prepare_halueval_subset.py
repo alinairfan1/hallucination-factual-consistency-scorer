@@ -15,12 +15,14 @@ def test_convert_halueval_rows_produces_two_examples_per_row():
 
     assert len(examples) == 2
     assert examples[0] == {
-        "answer": "Paris is the capital of France.",
+        "answer": 'Question: "What is the capital of France?" '
+        "Answer: Paris is the capital of France.",
         "sources": ["Paris is the capital of France."],
         "label": "supported",
     }
     assert examples[1] == {
-        "answer": "Berlin is the capital of France.",
+        "answer": 'Question: "What is the capital of France?" '
+        "Answer: Berlin is the capital of France.",
         "sources": ["Paris is the capital of France."],
         "label": "hallucinated",
     }
