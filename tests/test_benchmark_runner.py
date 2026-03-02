@@ -52,6 +52,34 @@ def test_run_benchmark_predicts_hallucinated_when_score_below_threshold():
     assert results[0].num_flagged_claims == 1
 
 
+def test_run_benchmark_continues_past_a_malformed_judge_response():
+    examples = [
+        DatasetExample(answer="a1", sources=["s1"], label="supported"),
+        DatasetExample(answer="a2", sources=["s2"], label="hallucinated"),
+        DatasetExample(answer="a3", sources=["s3"], label="supported"),
+    ]
+    llm = FakeJudge(
+        responses=[
+            '["claim1"]',
+            '{"verdict": "entailed", "reason": "ok"}',
+            "not valid json",  # claim extraction for example 2 blows up
+            '["claim3"]',
+            '{"verdict": "entailed", "reason": "ok"}',
+        ]
+    )
+
+    results = run_benchmark(examples, llm)
+
+    assert len(results) == 3
+    assert results[0].error is None
+    assert results[0].predicted_label == "supported"
+    assert results[1].error is not None
+    assert results[1].predicted_label == "hallucinated"
+    assert results[1].actual_label == "hallucinated"
+    assert results[2].error is None
+    assert results[2].predicted_label == "supported"
+
+
 def test_run_benchmark_preserves_example_order_via_index():
     examples = [
         DatasetExample(answer="a1", sources=["s1"], label="supported"),

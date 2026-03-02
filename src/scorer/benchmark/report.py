@@ -11,6 +11,13 @@ def format_report(
         f"Recall:    {metrics.recall:.1%}",
         f"F1:        {metrics.f1:.1%}  "
         f"(naive 'always supported' baseline: {metrics.naive_baseline_f1:.1%})",
+    ]
+    if metrics.error_count:
+        lines.append(
+            f"Errors:    {metrics.error_count} example(s) failed with malformed judge "
+            "output and were excluded from precision/recall/F1 above"
+        )
+    lines += [
         "",
         "Calibration (score -> empirical supported rate):",
     ]
