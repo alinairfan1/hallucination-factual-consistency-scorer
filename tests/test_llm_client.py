@@ -3,68 +3,7 @@ from dataclasses import dataclass
 import pytest
 from mistralai.client.utils import BackoffStrategy, RetryConfig
 
-from scorer.llm_client import AnthropicJudge, MistralJudge, parse_json_response
-
-
-@dataclass
-class FakeContentBlock:
-    type: str
-    text: str
-
-
-@dataclass
-class FakeResponse:
-    content: list[FakeContentBlock]
-
-
-class FakeAnthropicMessages:
-    def __init__(self, response: FakeResponse) -> None:
-        self._response = response
-        self.last_kwargs: dict | None = None
-
-    def create(self, **kwargs):
-        self.last_kwargs = kwargs
-        return self._response
-
-
-class FakeAnthropicClient:
-    def __init__(self, response: FakeResponse) -> None:
-        self.messages = FakeAnthropicMessages(response)
-
-
-def test_complete_extracts_text_content():
-    fake_response = FakeResponse(content=[FakeContentBlock(type="text", text="hello")])
-    client = FakeAnthropicClient(fake_response)
-    judge = AnthropicJudge(model="claude-sonnet-5", client=client)
-
-    result = judge.complete(system="Be terse.", user="Say hi.")
-
-    assert result == "hello"
-
-
-def test_complete_concatenates_multiple_text_blocks():
-    fake_response = FakeResponse(
-        content=[
-            FakeContentBlock(type="text", text="hel"),
-            FakeContentBlock(type="text", text="lo"),
-        ]
-    )
-    client = FakeAnthropicClient(fake_response)
-    judge = AnthropicJudge(model="claude-sonnet-5", client=client)
-
-    assert judge.complete(system="sys", user="usr") == "hello"
-
-
-def test_complete_passes_system_user_and_model_correctly():
-    fake_response = FakeResponse(content=[FakeContentBlock(type="text", text="hi")])
-    client = FakeAnthropicClient(fake_response)
-    judge = AnthropicJudge(model="claude-sonnet-5", client=client)
-
-    judge.complete(system="Be terse.", user="Say hi.")
-
-    assert client.messages.last_kwargs["system"] == "Be terse."
-    assert client.messages.last_kwargs["messages"] == [{"role": "user", "content": "Say hi."}]
-    assert client.messages.last_kwargs["model"] == "claude-sonnet-5"
+from scorer.llm_client import MistralJudge, parse_json_response
 
 
 def test_parse_json_response_parses_plain_json():

@@ -13,15 +13,16 @@ class FakeJudge:
 
 def test_build_judge_uses_configured_model_and_key(monkeypatch):
     class FakeClient:
-        def __init__(self, api_key: str) -> None:
+        def __init__(self, api_key: str, retry_config) -> None:
             self.api_key = api_key
+            self.retry_config = retry_config
 
-    monkeypatch.setattr(cli_module.anthropic, "Anthropic", FakeClient)
+    monkeypatch.setattr(cli_module, "Mistral", FakeClient)
 
     judge = build_judge()
 
     assert judge.model == settings.judge_model
-    assert judge.client.api_key == settings.anthropic_api_key
+    assert judge.client.api_key == settings.mistral_api_key
 
 
 def test_main_prints_report_for_a_small_dataset(monkeypatch, tmp_path, capsys):

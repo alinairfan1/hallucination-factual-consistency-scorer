@@ -1,21 +1,21 @@
 import argparse
 from pathlib import Path
 
-import anthropic
+from mistralai.client import Mistral
 
 from scorer.benchmark.metrics import compute_calibration, compute_classification_metrics
 from scorer.benchmark.report import format_report
 from scorer.benchmark.runner import run_benchmark
 from scorer.config import settings
 from scorer.dataset import load_examples
-from scorer.llm_client import AnthropicJudge
+from scorer.llm_client import DEFAULT_JUDGE_RETRY_CONFIG, MistralJudge
 
 DEFAULT_DATASET_PATH = Path("data/halueval_qa_benchmark.jsonl")
 
 
-def build_judge() -> AnthropicJudge:
-    client = anthropic.Anthropic(api_key=settings.anthropic_api_key)
-    return AnthropicJudge(model=settings.judge_model, client=client)
+def build_judge() -> MistralJudge:
+    client = Mistral(api_key=settings.mistral_api_key, retry_config=DEFAULT_JUDGE_RETRY_CONFIG)
+    return MistralJudge(model=settings.judge_model, client=client)
 
 
 def main() -> None:

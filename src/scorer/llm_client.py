@@ -4,21 +4,6 @@ from typing import Any
 from mistralai.client.utils import BackoffStrategy, RetryConfig
 
 
-class AnthropicJudge:
-    def __init__(self, model: str, client: Any) -> None:
-        self.model = model
-        self.client = client
-
-    def complete(self, system: str, user: str) -> str:
-        response = self.client.messages.create(
-            model=self.model,
-            max_tokens=1024,
-            system=system,
-            messages=[{"role": "user", "content": user}],
-        )
-        return "".join(block.text for block in response.content if block.type == "text")
-
-
 def parse_json_response(text: str) -> Any:
     stripped = text.strip()
     if stripped.startswith("```"):
