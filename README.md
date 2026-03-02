@@ -84,6 +84,13 @@ scorer-benchmark
 
 ## Quickstart
 
+Set up your Mistral API key first — the scorer and benchmark CLI can't make judge calls without it:
+
+```bash
+cp .env.example .env
+# edit .env and set SCORER_MISTRAL_API_KEY to a real key from https://console.mistral.ai
+```
+
 Run the API + Postgres stack:
 
 ```bash

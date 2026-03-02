@@ -21,6 +21,7 @@ services:
       dockerfile: docker/Dockerfile
     environment:
       SCORER_DATABASE_URL: postgresql+psycopg://scorer:scorer@db:5432/scorer
+      SCORER_MISTRAL_API_KEY: ${SCORER_MISTRAL_API_KEY}
     ports:
       - "8000:8000"
     depends_on:
