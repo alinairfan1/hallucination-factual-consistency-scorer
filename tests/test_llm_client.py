@@ -1,8 +1,9 @@
 from dataclasses import dataclass
 
 import pytest
+from mistralai.client.utils import BackoffStrategy, RetryConfig
 
-from scorer.llm_client import AnthropicJudge, parse_json_response
+from scorer.llm_client import AnthropicJudge, MistralJudge, parse_json_response
 
 
 @dataclass
@@ -82,3 +83,71 @@ def test_parse_json_response_raises_clear_error_for_invalid_json():
     with pytest.raises(ValueError) as exc_info:
         parse_json_response("not json")
     assert "not json" in str(exc_info.value)
+
+
+@dataclass
+class FakeMistralMessage:
+    content: str
+
+
+@dataclass
+class FakeMistralChoice:
+    message: FakeMistralMessage
+
+
+@dataclass
+class FakeMistralResponse:
+    choices: list[FakeMistralChoice]
+
+
+class FakeMistralChat:
+    def __init__(self, response: FakeMistralResponse) -> None:
+        self._response = response
+        self.last_kwargs: dict | None = None
+
+    def complete(self, **kwargs):
+        self.last_kwargs = kwargs
+        return self._response
+
+
+class FakeMistralClient:
+    def __init__(self, response: FakeMistralResponse) -> None:
+        self.chat = FakeMistralChat(response)
+
+
+def test_mistral_judge_extracts_message_content():
+    fake_response = FakeMistralResponse(
+        choices=[FakeMistralChoice(message=FakeMistralMessage(content="hello"))]
+    )
+    client = FakeMistralClient(fake_response)
+    judge = MistralJudge(model="mistral-large-latest", client=client)
+
+    result = judge.complete(system="Be terse.", user="Say hi.")
+
+    assert result == "hello"
+
+
+def test_mistral_judge_passes_system_user_model_and_temperature():
+    fake_response = FakeMistralResponse(
+        choices=[FakeMistralChoice(message=FakeMistralMessage(content="hi"))]
+    )
+    client = FakeMistralClient(fake_response)
+    judge = MistralJudge(model="mistral-large-latest", client=client)
+
+    judge.complete(system="Be terse.", user="Say hi.")
+
+    assert client.chat.last_kwargs["model"] == "mistral-large-latest"
+    assert client.chat.last_kwargs["temperature"] == 0.0
+    assert client.chat.last_kwargs["messages"] == [
+        {"role": "system", "content": "Be terse."},
+        {"role": "user", "content": "Say hi."},
+    ]
+
+
+def test_default_judge_retry_config_covers_transient_errors():
+    from scorer.llm_client import DEFAULT_JUDGE_RETRY_CONFIG
+
+    assert isinstance(DEFAULT_JUDGE_RETRY_CONFIG, RetryConfig)
+    assert DEFAULT_JUDGE_RETRY_CONFIG.strategy == "backoff"
+    assert isinstance(DEFAULT_JUDGE_RETRY_CONFIG.backoff, BackoffStrategy)
+    assert DEFAULT_JUDGE_RETRY_CONFIG.retry_connection_errors is True
