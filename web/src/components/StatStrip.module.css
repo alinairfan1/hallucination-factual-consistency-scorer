@@ -59,9 +59,19 @@
   color: var(--text-muted);
 }
 
-.marginDelta {
+.marginDeltaPositive,
+.marginDeltaNegative {
   margin-top: 4px;
   font-family: var(--font-mono);
   font-size: 0.8125rem;
-  color: var(--verdict-entailed);
+}
+
+/* Never verdict-entailed/contradicted here — those colors are reserved for the three
+   judge verdicts (see DESIGN.md's Verdict Isolation Rule). A margin isn't a verdict. */
+.marginDeltaPositive {
+  color: var(--signal-blue);
+}
+
+.marginDeltaNegative {
+  color: var(--text-muted);
 }

@@ -69,6 +69,8 @@ def test_score_endpoint_fully_supported_answer_returns_score_one():
             assert logged.num_sources == 1
             assert logged.score == 1.0
             assert logged.num_flagged_claims == 0
+            assert logged.sources == ["Paris is the capital of France."]
+            assert logged.claims[0]["verdict"] == "entailed"
     finally:
         app.dependency_overrides.clear()
 

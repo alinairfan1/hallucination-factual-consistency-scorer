@@ -2,6 +2,12 @@ from dataclasses import dataclass
 
 from scorer.benchmark.runner import QueryResult
 
+# Best achievable F1 from a single answer-length threshold classifier over
+# data/halueval_qa_benchmark.jsonl, documented in data/README.md. This is a
+# property of the dataset text, not something a single benchmark run
+# computes, so it's a fixed constant rather than derived from `results`.
+NAIVE_LENGTH_HEURISTIC_F1 = 73.7
+
 
 @dataclass
 class ClassificationMetrics:

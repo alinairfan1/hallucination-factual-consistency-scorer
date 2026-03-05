@@ -1,7 +1,8 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Literal, Protocol
 
 from scorer.dataset import DatasetExample
+from scorer.schemas import ClaimVerdict
 from scorer.scoring import run_scoring
 
 
@@ -16,6 +17,9 @@ class QueryResult:
     predicted_label: Literal["supported", "hallucinated"]
     score: float
     num_flagged_claims: int
+    answer: str = ""
+    sources: list[str] = field(default_factory=list)
+    claims: list[ClaimVerdict] = field(default_factory=list)
     error: str | None = None
 
 
@@ -49,6 +53,8 @@ def run_benchmark(
                     predicted_label="hallucinated",
                     score=0.0,
                     num_flagged_claims=0,
+                    answer=example.answer,
+                    sources=example.sources,
                     error=str(exc),
                 )
             )
@@ -64,6 +70,9 @@ def run_benchmark(
                 predicted_label=predicted_label,
                 score=scored.score,
                 num_flagged_claims=len(scored.flagged_claims),
+                answer=example.answer,
+                sources=example.sources,
+                claims=scored.claims,
             )
         )
     return results

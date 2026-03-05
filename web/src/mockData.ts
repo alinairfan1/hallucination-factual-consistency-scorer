@@ -254,6 +254,17 @@ export const benchmarkExamples: BenchmarkExample[] = [
   },
 ];
 
+// Curated editorial commentary about this specific dataset/methodology (see README.md's
+// diagnosis narrative) — not something a benchmark run computes, so it's not part of the
+// backend's GET /v1/benchmark contract. The real API client merges this in alongside the
+// live-computed numbers; see api.ts.
+export const KNOWN_LIMITATIONS: string[] = [
+  "Small sample (100 examples) — precision/recall/F1 carry meaningful sampling noise.",
+  "Calibration is directional, not tight: a 0.0-confidence example still turns out supported ~1 in 8 times.",
+  'One diagnosed failure case substitutes a different but similarly-themed historical event ("the Korean War" for sources describing World War II) via outside knowledge the prompt explicitly forbids — not fixed.',
+  "At least one row's right_answer/hallucinated_answer pairing looks swapped relative to its source text — likely HaluEval label noise, not a judge error (see halueval-013 below).",
+];
+
 export const benchmarkSummary: BenchmarkSummary = {
   precision: 87.0,
   recall: 80.0,
@@ -267,12 +278,7 @@ export const benchmarkSummary: BenchmarkSummary = {
     { score: 1.0, count: 54, empiricalSupportedRate: 81.5 },
     { score: 0.0, count: 37, empiricalSupportedRate: 13.5 },
   ],
-  knownLimitations: [
-    "Small sample (100 examples) — precision/recall/F1 carry meaningful sampling noise.",
-    "Calibration is directional, not tight: a 0.0-confidence example still turns out supported ~1 in 8 times.",
-    'One diagnosed failure case substitutes a different but similarly-themed historical event ("the Korean War" for sources describing World War II) via outside knowledge the prompt explicitly forbids — not fixed.',
-    "At least one row's right_answer/hallucinated_answer pairing looks swapped relative to its source text — likely HaluEval label noise, not a judge error (see halueval-013 below).",
-  ],
+  knownLimitations: KNOWN_LIMITATIONS,
 };
 
 export const liveScoringRuns: LiveScoringRun[] = [];

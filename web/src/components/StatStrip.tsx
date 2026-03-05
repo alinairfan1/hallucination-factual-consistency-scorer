@@ -2,7 +2,8 @@ import type { BenchmarkSummary } from "../types";
 import styles from "./StatStrip.module.css";
 
 export function StatStrip({ summary }: { summary: BenchmarkSummary }) {
-  const margin = (summary.f1 - summary.naiveLengthHeuristicF1).toFixed(1);
+  const marginValue = summary.f1 - summary.naiveLengthHeuristicF1;
+  const marginLabel = `${marginValue >= 0 ? "+" : ""}${marginValue.toFixed(1)} pts margin`;
 
   return (
     <div className={styles.strip}>
@@ -23,7 +24,9 @@ export function StatStrip({ summary }: { summary: BenchmarkSummary }) {
         <span className={styles.marginTop}>{summary.f1.toFixed(1)}%</span>
         <div className={styles.marginRule} />
         <span className={styles.marginBottom}>{summary.naiveLengthHeuristicF1.toFixed(1)}%</span>
-        <span className={styles.marginDelta}>+{margin} pts margin</span>
+        <span className={marginValue >= 0 ? styles.marginDeltaPositive : styles.marginDeltaNegative}>
+          {marginLabel}
+        </span>
       </div>
     </div>
   );

@@ -26,12 +26,14 @@ as a stretch goal), Postgres for eval run storage, TypeScript + React for a resu
 
 ## Status
 
-M1–M3 complete — FastAPI app, Pydantic schemas, `ScoringRun` DB model, Docker Compose packaging, CI,
-claim extraction, LLM-judge entailment checking, aggregate scoring, and a benchmark CLI against a real
-HaluEval QA subset are all in place. The judge provider is **Mistral AI** (`mistral-large-latest`), not
-Anthropic — see `src/scorer/llm_client.py`. M4 (report viewer) and M5 (polish) are not started. See
-[`PLANNING.md`](./PLANNING.md) for full design and [`docs/superpowers/plans/`](./docs/superpowers/plans/)
-for each milestone's implementation plan. Difficulty: ⭐⭐ Easy-Medium (2nd of 5 in build order).
+M1–M4 complete — FastAPI app, Pydantic schemas, DB models (including per-example benchmark result and
+live-scoring claim-detail persistence), Docker Compose packaging, CI, claim extraction, LLM-judge
+entailment checking, aggregate scoring, a benchmark CLI against a real HaluEval QA subset, and a React +
+TypeScript report viewer (`web/`, read-only, see `DESIGN.md`) are all in place. The judge provider is
+**Mistral AI** (`mistral-large-latest`), not Anthropic — see `src/scorer/llm_client.py`. M5 (polish) is not
+started. See [`PLANNING.md`](./PLANNING.md) for full design and
+[`docs/superpowers/plans/`](./docs/superpowers/plans/) for each milestone's implementation plan.
+Difficulty: ⭐⭐ Easy-Medium (2nd of 5 in build order).
 
 ### Real benchmark results
 

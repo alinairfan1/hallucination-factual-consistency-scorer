@@ -1,7 +1,7 @@
 import pytest
 from pydantic import ValidationError
 
-from scorer.schemas import FlaggedClaim, ScoreRequest, ScoreResponse
+from scorer.schemas import ClaimVerdict, FlaggedClaim, ScoreRequest, ScoreResponse
 
 
 def test_score_request_accepts_answer_and_sources():
@@ -25,6 +25,9 @@ def test_score_response_round_trip():
         score=0.75,
         flagged_claims=[
             FlaggedClaim(claim="The tower is 500m tall.", verdict="contradicted", reason="Sources say 330m."),
+        ],
+        claims=[
+            ClaimVerdict(claim="The tower is 500m tall.", verdict="contradicted", reason="Sources say 330m."),
         ],
     )
     dumped = resp.model_dump()

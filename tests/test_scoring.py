@@ -23,6 +23,8 @@ def test_run_scoring_fully_supported_answer_returns_score_one():
 
     assert result.score == 1.0
     assert result.flagged_claims == []
+    assert len(result.claims) == 1
+    assert result.claims[0].verdict == "entailed"
 
 
 def test_run_scoring_contradicted_claim_is_flagged():

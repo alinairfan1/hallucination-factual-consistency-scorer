@@ -1,6 +1,12 @@
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy.pool import StaticPool
+
 from scorer.benchmark import cli as cli_module
 from scorer.benchmark.cli import build_judge, main
 from scorer.config import settings
+from scorer.db.base import Base
+from scorer.db.models import BenchmarkRun
 
 
 class FakeJudge:
@@ -47,8 +53,21 @@ def test_main_prints_report_for_a_small_dataset(monkeypatch, tmp_path, capsys):
     monkeypatch.setattr(cli_module, "build_judge", lambda: fake_judge)
     monkeypatch.setattr("sys.argv", ["scorer-benchmark", "--dataset", str(dataset_path)])
 
+    engine = create_engine(
+        "sqlite:///:memory:", poolclass=StaticPool, connect_args={"check_same_thread": False}
+    )
+    Base.metadata.create_all(engine)
+    test_factory = sessionmaker(bind=engine, autoflush=False, autocommit=False)
+    monkeypatch.setattr(cli_module, "build_session_factory", lambda: test_factory)
+
     main()
 
     captured = capsys.readouterr()
     assert "2 examples" in captured.out
     assert "Precision" in captured.out
+
+    with test_factory() as session:
+        persisted = session.query(BenchmarkRun).one()
+        assert persisted.example_count == 2
+        assert persisted.dataset_name == dataset_path.name
+        assert len(persisted.examples) == 2
