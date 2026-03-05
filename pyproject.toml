@@ -1,6 +1,6 @@
 [project]
 name = "hallucination-factual-consistency-scorer"
-version = "0.1.0"
+version = "1.0.0"
 description = "Scores whether an LLM answer is factually supported by its source documents"
 requires-python = ">=3.11"
 dependencies = [
