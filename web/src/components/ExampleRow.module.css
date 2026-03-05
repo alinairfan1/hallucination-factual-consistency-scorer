@@ -1,0 +1,151 @@
+.row {
+  border-bottom: 1px solid var(--border);
+}
+
+.row:last-child {
+  border-bottom: none;
+}
+
+.summary {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  padding: var(--space-md) var(--space-sm);
+  background: transparent;
+  border: none;
+  text-align: left;
+  color: inherit;
+  transition: background 0.12s ease;
+}
+
+.summary:hover {
+  background: var(--surface-raised);
+}
+
+.summary:focus-visible {
+  outline: 2px solid var(--signal-blue);
+  outline-offset: -2px;
+}
+
+.chevron {
+  flex: 0 0 auto;
+  font-family: var(--font-mono);
+  color: var(--text-muted);
+  transition: transform 0.15s ease;
+  width: 14px;
+}
+
+.chevronOpen {
+  transform: rotate(90deg);
+  color: var(--signal-blue);
+}
+
+.qa {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.question {
+  font-size: 0.8125rem;
+  color: var(--text-muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.answer {
+  font-family: var(--font-mono);
+  font-size: 0.9375rem;
+  color: var(--text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.badges {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.scoreBadge {
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  min-width: 3ch;
+  text-align: right;
+}
+
+.labelBadge {
+  font-family: var(--font-display);
+  font-size: 0.6875rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.detail {
+  padding: 0 var(--space-sm) var(--space-lg) calc(var(--space-md) + 14px);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.sourcesLabel {
+  font-size: 0.6875rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.sourceText {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+  max-width: 75ch;
+}
+
+.claim {
+  padding-left: var(--space-md);
+  border-left: 2px solid var(--claim-color, var(--border));
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.claimText {
+  font-family: var(--font-mono);
+  font-size: 0.9375rem;
+  color: var(--text-primary);
+}
+
+.reasonText {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+  max-width: 75ch;
+}
+
+@media (max-width: 640px) {
+  .summary {
+    flex-wrap: wrap;
+  }
+
+  .qa {
+    order: 1;
+    flex-basis: 100%;
+  }
+
+  .badges {
+    order: 2;
+  }
+}

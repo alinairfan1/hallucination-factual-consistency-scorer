@@ -175,8 +175,9 @@ heavy strokes.
 - **Empty:** centered Body text in `text-muted`, no illustration — a plain, honest sentence (e.g. "No live
   scoring calls yet — run `POST /v1/score` to populate this section.").
 - **Loading:** skeleton blocks in `surface-raised` at the shape of the real content, no spinner.
-- **Error:** `verdict-contradicted`-colored left border on a plain message panel, factual copy only (no
-  alarmist iconography).
+- **Error:** plain bordered panel (standard 1px `border`, no verdict color — errors aren't a verdict, so
+  the Verdict Isolation Rule keeps them out of that palette), a small "Error" label, factual copy only, no
+  alarmist iconography.
 
 ## Do's and Don'ts
 

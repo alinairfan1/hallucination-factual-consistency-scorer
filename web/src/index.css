@@ -1,0 +1,92 @@
+@import "@fontsource/space-grotesk/400.css";
+@import "@fontsource/space-grotesk/500.css";
+@import "@fontsource/space-grotesk/600.css";
+@import "@fontsource/space-mono/400.css";
+@import "@fontsource/space-mono/700.css";
+
+:root {
+  --ink: #0a0c0f;
+  --surface: #12151a;
+  --surface-raised: #1a1e25;
+  --border: #23272e;
+  --text-primary: #e7e9ec;
+  --text-muted: #9aa1ac;
+  --signal-blue: #4c8dff;
+  --signal-blue-dim: rgba(76, 141, 255, 0.16);
+
+  --verdict-entailed: #5fbe87;
+  --verdict-contradicted: #e5675f;
+  --verdict-not-enough-info: #d4a657;
+
+  --font-display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "Space Mono", ui-monospace, SFMono-Regular, monospace;
+
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-pill: 999px;
+
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 40px;
+
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--ink);
+  color: var(--text-primary);
+  font-family: var(--font-display);
+  font-size: 15px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+h1,
+h2,
+h3 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 600;
+}
+
+p {
+  margin: 0;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+a {
+  color: var(--signal-blue);
+}
+
+.mono {
+  font-family: var(--font-mono);
+}
+
+.text-muted {
+  color: var(--text-muted);
+}
+
+::selection {
+  background: var(--signal-blue-dim);
+  color: var(--text-primary);
+}

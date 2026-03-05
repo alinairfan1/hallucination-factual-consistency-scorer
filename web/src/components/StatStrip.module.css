@@ -1,0 +1,67 @@
+.strip {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-md);
+}
+
+@media (max-width: 720px) {
+  .strip {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.card {
+  background: var(--surface-raised);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.label {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.value {
+  font-family: var(--font-mono);
+  font-size: clamp(1.75rem, 3vw, 2.25rem);
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1;
+}
+
+.marginCard {
+  composes: card;
+}
+
+.marginTop {
+  font-family: var(--font-mono);
+  font-size: 1.375rem;
+  color: var(--text-primary);
+}
+
+.marginRule {
+  height: 1px;
+  background: var(--border);
+  margin: 2px 0;
+}
+
+.marginBottom {
+  font-family: var(--font-mono);
+  font-size: 1.375rem;
+  color: var(--text-muted);
+}
+
+.marginDelta {
+  margin-top: 4px;
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  color: var(--verdict-entailed);
+}

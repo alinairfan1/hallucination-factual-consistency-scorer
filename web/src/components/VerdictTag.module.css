@@ -1,0 +1,40 @@
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 12px;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 0.6875rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border: 1px solid transparent;
+  white-space: nowrap;
+}
+
+.tag::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.entailed {
+  color: var(--verdict-entailed);
+  background: rgba(95, 190, 135, 0.14);
+  border-color: rgba(95, 190, 135, 0.4);
+}
+
+.contradicted {
+  color: var(--verdict-contradicted);
+  background: rgba(229, 103, 95, 0.14);
+  border-color: rgba(229, 103, 95, 0.4);
+}
+
+.not_enough_info {
+  color: var(--verdict-not-enough-info);
+  background: rgba(212, 166, 87, 0.14);
+  border-color: rgba(212, 166, 87, 0.4);
+}
