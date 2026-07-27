@@ -42,5 +42,5 @@ def test_extract_claims_returns_empty_list_for_no_claims():
 def test_extract_claims_raises_for_non_list_response():
     llm = FakeJudge('{"not": "a list"}')
 
-    with pytest.raises(ValueError):
+    with pytest.raises(TypeError):
         extract_claims("some answer", llm)
