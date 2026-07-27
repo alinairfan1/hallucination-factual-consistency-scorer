@@ -9,8 +9,10 @@ def format_report(
         "-" * 50,
         f"Precision: {metrics.precision:.1%}",
         f"Recall:    {metrics.recall:.1%}",
-        f"F1:        {metrics.f1:.1%}  "
-        f"(naive 'always supported' baseline: {metrics.naive_baseline_f1:.1%})",
+        (
+            f"F1:        {metrics.f1:.1%}  "
+            f"(naive 'always supported' baseline: {metrics.naive_baseline_f1:.1%})"
+        ),
     ]
     if metrics.error_count:
         lines.append(

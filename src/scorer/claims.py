@@ -54,6 +54,6 @@ def extract_claims(answer: str, llm: Judge) -> list[str]:
     claims = parse_json_response(response_text)
 
     if not isinstance(claims, list):
-        raise ValueError(f"Expected a JSON array of claims, got: {response_text!r}")
+        raise TypeError(f"Expected a JSON array of claims, got: {response_text!r}")
 
     return [str(claim) for claim in claims]

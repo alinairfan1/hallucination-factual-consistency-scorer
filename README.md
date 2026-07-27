@@ -1,5 +1,9 @@
 # Hallucination / Factual-Consistency Scorer
 
+[![CI](https://github.com/alinairfan1/hallucination-factual-consistency-scorer/actions/workflows/ci.yml/badge.svg)](https://github.com/alinairfan1/hallucination-factual-consistency-scorer/actions/workflows/ci.yml)
+
+![Report viewer showing precision/recall/F1 stat strip and benchmark results with known limitations](./docs/images/tool-ui.png)
+
 ## Problem
 
 Every company shipping a RAG product hits the same unsolved-enough pain point: the model's answer sounds

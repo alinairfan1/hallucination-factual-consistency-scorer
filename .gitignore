@@ -8,3 +8,6 @@ venv/
 .ruff_cache/
 scorer.db
 .env
+.superpowers/
+.impeccable/
+.DS_Store

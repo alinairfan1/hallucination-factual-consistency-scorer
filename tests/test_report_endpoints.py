@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 
 from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
@@ -106,7 +106,7 @@ def test_list_scoring_runs_returns_most_recent_first_with_claims():
     test_factory = _make_test_session_factory()
     app.dependency_overrides[get_session] = _override_session(test_factory)
 
-    now = datetime.now(timezone.utc)
+    now = datetime.now(UTC)
 
     try:
         with test_factory() as session:

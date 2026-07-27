@@ -31,7 +31,7 @@ def test_check_entailment_returns_entailed_verdict_and_reason():
 def test_check_entailment_returns_contradicted_verdict():
     llm = FakeJudge('{"verdict": "contradicted", "reason": "Sources say Paris, not Berlin."}')
 
-    verdict, reason = check_entailment(
+    verdict, _reason = check_entailment(
         "The Eiffel Tower is in Berlin.",
         ["The Eiffel Tower is in Paris."],
         llm,
@@ -43,7 +43,7 @@ def test_check_entailment_returns_contradicted_verdict():
 def test_check_entailment_returns_not_enough_info_verdict():
     llm = FakeJudge('{"verdict": "not_enough_info", "reason": "Sources do not mention height."}')
 
-    verdict, reason = check_entailment(
+    verdict, _reason = check_entailment(
         "The tower is 330 meters tall.",
         ["The tower is located in Paris."],
         llm,

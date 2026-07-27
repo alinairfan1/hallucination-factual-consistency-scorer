@@ -30,7 +30,7 @@ def run_benchmark(
     for index, example in enumerate(examples):
         try:
             scored = run_scoring(example.answer, example.sources, llm)
-        except Exception as exc:
+        except Exception as exc:  # noqa: BLE001
             # A single malformed judge response — bad claim extraction/entailment
             # JSON (scorer.llm_client.parse_json_response, scorer.claims,
             # scorer.entailment) or an API-boundary failure that survives the
